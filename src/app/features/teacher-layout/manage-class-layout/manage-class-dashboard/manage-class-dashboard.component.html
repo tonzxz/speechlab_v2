@@ -1,0 +1,95 @@
+<div class="w-full h-fit overflow-hidden border border-black p-4">
+  <div class="w-full h-full flex flex-col gap-4 overflow-y-auto rounded-lg border border-black">
+    <div class=" w-full h-fit flex flex-row gap-4 justify-end items-center">
+      <div class="w-full overflow-hidden flex flex-col justify-end items-end gap-2">
+        <button (click)="showModal()"
+          class="w-36 sticky top-0 capitalize bg-primary-tw rounded-lg text-primary-text-tw py-1.5 hover:bg-secondary-tw flex flex-row justify-center items-center duration-300">
+          <iconify-icon icon="tdesign:plus" width="25" height="25"></iconify-icon> create class
+        </button>
+      </div>
+    </div>
+
+    <!-- Display classes -->
+    <div class="w-full h-full flex flex-col gap-4 overflow-auto pb-[10dvh]">
+      <div *ngFor="let classItem of classes; trackBy: trackByFn"
+        class="shadow-ds overflow-visible rounded-xl w-full  flex flex-row justify-between relative">
+        <div
+          class="w-full flex lg:justify-between justify-start items-center flex-col px-4 py-4 border border-gray-400 rounded-l-xl overflow-hidden bg-white">
+          <div class="w-full items-center justify-between flex flex-row">
+            <h1 routerLink="/teacher/manage-class/manage-class-stream/manage-class-classwork"
+              class="font-bold lg:text-xl text-base cursor-pointer">
+              {{ classItem.class_name }} | {{ classItem.course_title }}
+            </h1>
+            <div class="flex justify-center items-center gap-1">
+              <small class="font-semibold">{{ classItem.student_count }}</small>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+          <div class="w-full lg:items-center items-start lg:justify-between justify-start flex flex-col lg:flex-row">
+            <div class="flex justify-items items-center gap-1 text-gray-600">
+              <iconify-icon class="lg:block hidden" icon="ph:clock-light" width="18" height="18"></iconify-icon>
+              <p class="text-sm">{{ classItem.day_schedule }} | {{ classItem.class_start_time }} - {{
+                classItem.class_end_time }}</p>
+            </div>
+            <div class=" flex justify-center items-center gap-2 text-sm font-semibold">
+              <p>Class code:</p>
+              <p>{{ classItem.class_code }}</p>
+              <svg class="text-secondary-text-tw cursor-pointer" width="20" height="20" viewBox="0 0 25 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M16.8916 1H4.8916C3.7916 1 2.8916 1.9 2.8916 3V17H4.8916V3H16.8916V1ZM19.8916 5H8.8916C7.7916 5 6.8916 5.9 6.8916 7V21C6.8916 22.1 7.7916 23 8.8916 23H19.8916C20.9916 23 21.8916 22.1 21.8916 21V7C21.8916 5.9 20.9916 5 19.8916 5ZM19.8916 21H8.8916V7H19.8916V21Z"
+                  fill="currentColor" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="w-full lg:max-w-md max-w-44 relative overflow-visible">
+          <iconify-icon (click)="showDropDown(classItem.id, $event)"
+            class="absolute top-2 right-2 text-primary-text-tw cursor-pointer" icon="tabler:dots-vertical" width="25"
+            height="25">
+          </iconify-icon>
+
+          <div *ngIf="openedDropDownId === classItem.id" @fadeAnimation (clickOutside)="closeDropDown()"
+            class="absolute top-10 right-0 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 border py-4 px-2 border-gray-200">
+
+            <button
+              [routerLink]="['/teacher/manage-class/manage-class-stream/manage-class-classwork', classItem.course_id]"
+              class="block w-full text-left s py-3 px-4 text-sm text-gray-700 hover:bg-gray-200 hover:text-secondary-tw">
+              Open class
+            </button>
+
+            <button *ngFor="let item of actionList; trackBy: trackByFn" (click)="openModal(item)"
+              class="block w-full text-left s py-3 px-4 text-sm text-gray-700 hover:bg-gray-200 hover:text-secondary-tw"
+              [ngClass]="{'text-red-500': item.name === 'Delete', 'hover:text-red-700': item.name === 'Delete'}">
+              {{ item.name }}
+            </button>
+          </div>
+
+          <div class="w-full h-full bg-primary-tw rounded-r-xl">
+            <!-- image -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modals -->
+<!-- Modals -->
+<div *ngIf="currentModal === ModalState.CreateClass" @fadeAnimation
+  class="fixed top-0 left-0 z-[1000] w-full h-full background">
+  <div class="flex justify-center items-center h-fit w-fit">
+    <app-create-class (closeModal)="closeModal()" (classCreated)="onClassCreated()"></app-create-class>
+  </div>
+</div>
+
+<div *ngIf="currentModal === ModalState.CreateSpecificClass" @fadeAnimation
+  class="absolute top-0 left-0 z-[1000] w-full h-full background">
+  <div class="flex justify-center items-center z-[1000] w-full h-full">
+    <div class="w-full h-full">
+      <app-create-class *ngIf="selectedId === 1" (closeModal)="closeSelectedModal()"
+        (classCreated)="onClassCreated()"></app-create-class>
+      <app-delete-class *ngIf="selectedId === 2" (closeModal)="closeSelectedModal()"></app-delete-class>
+    </div>
+  </div>
+</div>

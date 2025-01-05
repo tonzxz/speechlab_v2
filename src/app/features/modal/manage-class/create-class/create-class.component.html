@@ -1,0 +1,90 @@
+<div (clickOutside)="onCancel()" class="fixed max-w-screen-md h-fit py-8 px-8 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 bg-white rounded-lg shadow-lg z-50 flex flex-col items-center">
+  <div class="w-full">
+    <h2 class="mt-0 mb-10 text-xl text-gray-800">Create New Class</h2>
+    <form (ngSubmit)="onSubmit()" class="w-full flex flex-col">
+      <div class="grid grid-cols-3 gap-4">
+        <label class="text-gray-700 mb-2">
+          Class Name:
+          <input type="text" [(ngModel)]="className" name="className" required class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-tw" />
+        </label>
+
+        <label class="text-gray-700 mb-2">
+          Class Code:
+          <input type="text" [(ngModel)]="classCode" name="classCode" required class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-tw" />
+        </label>
+
+        <div class="flex flex-col">
+          <label class="text-gray-700 text-lg">Course:</label>
+          <div class="relative inline-block text-left w-full">
+            <!-- Dropdown Button -->
+            <button (click)="courseDropdownOpen = !courseDropdownOpen"
+              class="inline-flex justify-between w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md shadow-sm text-sm text-left font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-tw">
+              <span class="{{ selectedCourseId.length > 10 ? 'line-clamp-1' : '' }}">{{ selectedCourseTitle ? selectedCourseTitle : 'Select Course' }}</span>
+              <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+        
+            <!-- Dropdown Content (Courses) -->
+            <div *ngIf="courseDropdownOpen" (clickOutside)="courseDropdownOpen = false"
+              class="origin-top-right absolute mt-2 w-full rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <label *ngFor="let course of courses"
+                  class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                  <input type="radio" [value]="course.id" (change)="onCourseSelect(course)" [checked]="selectedCourseId === course.id"
+                    class="form-radio text-indigo-600 h-4 w-4 mr-2" />
+                  <span>{{ course.title }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+      <div class="grid grid-cols-3 gap-4 mt-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="text-gray-600 text-lg">Days:</label>
+          <div class="relative inline-block text-left">
+            <!-- Dropdown Button -->
+            <button (click)="dropdownOpen = !dropdownOpen" class="inline-flex justify-between w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-secondary-tw">
+              Select Days
+              <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            <!-- Dropdown Content (Checkboxes) -->
+            <div *ngIf="dropdownOpen" (clickOutside)="dropdownOpen = false" class="origin-top-right absolute mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+              <div class="py-1">
+                <label *ngFor="let day of days" class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">
+                  <input type="checkbox" [value]="day" (change)="onDayChange(day, $event)" [checked]="selectedDays.includes(day)" class="form-checkbox text-indigo-600 h-4 w-4 mr-2" />
+                  <span>{{ day }}</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="startTime" class="text-gray-700">Start Time:</label>
+          <input type="time" [(ngModel)]="startTime" name="startTime" required class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-tw" />
+        </div>
+
+        <div class="flex flex-col gap-1.5">
+          <label for="endTime" class="text-gray-700">End Time:</label>
+          <input type="time" [(ngModel)]="endTime" name="endTime" required class="w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-secondary-tw" />
+        </div>
+      </div>
+
+      <div class="flex justify-end items-center gap-4 pt-8">
+        <button type="submit" class="bg-primary-tw duration-300 text-white py-2 px-4 w-32 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Create Class
+        </button>
+        <button type="button" (click)="onCancel()" class="bg-gray-300 py-2 px-4 w-32 rounded-md hover:bg-gray-400 duration-300 focus:outline-none">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

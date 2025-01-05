@@ -1,0 +1,135 @@
+<div class="w-full h-fit flex flex-col gap-4 p-6 overflow-y-auto custom-scrollbar">
+  <div class="flex flex-col gap-4">
+    <div class="w-full h-fit flex lg:flex-row flex-col gap-4">
+      <!-- Welcome section -->
+      <div class="w-full col-span-1 lg:max-w-md bg-navy-blue text-white bg-primary-tw p-4 rounded-lg shadow-md">
+        <h1 class="text-lg font-bold mb-2">Welcome to your CSU Speech Lab Dashboard!</h1>
+        <p class="text-sm">Unlock your potential, manage your sessions, and access exclusive resources to enhance your
+          communication skills. Your journey to excellence starts here!</p>
+      </div>
+
+      <!-- Course overview -->
+      <div class="w-full bg-white p-4 rounded-lg shadow-md border border-gray-400">
+        <h2 class="text-lg font-bold mb-2">Course overview</h2>
+        <div class="relative flex items-center">
+          <button class="absolute lg:left-0 -left-4 text-gray-500 hover:text-gray-700">
+            <iconify-icon icon="solar:alt-arrow-up-linear" class="rotate-[270deg]" width="35"
+              height="35"></iconify-icon>
+          </button>
+          <div class="flex-1 flex justify-center lg:space-x-4 space-x-2">
+            <div class="bg-navy-blue text-white bg-primary-tw md:py-6 md:px-8 p-4 rounded-lg shadow-md">
+              <h3 class="lg:text-xl text-sm font-semibold">DOJ Certification</h3>
+            </div>
+            <div class="bg-navy-blue text-white bg-primary-tw md:py-6 md:px-8 p-4 rounded-lg shadow-md">
+              <h3 class="lg:text-xl text-sm font-semibold">Prompt Engineering</h3>
+            </div>
+          </div>
+          <button class="absolute lg:right-0 -right-4 text-gray-500 hover:text-gray-700">
+            <iconify-icon icon="solar:alt-arrow-up-linear" class="rotate-90" width="35" height="35"></iconify-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full h-fit flex lg:flex-row flex-col gap-4">
+      <!-- Calendar -->
+      <div class="w-full lg:max-w-md border border-gray-400 rounded-lg">
+        <app-calendar></app-calendar>
+      </div>
+
+      <!-- Current class -->
+      <div class="w-full bg-navy-blue flex flex-col text-white bg-primary-tw p-4 rounded-lg shadow-md">
+        <h2 class="text-lg font-bold mb-2">Current class</h2>
+        <div class="space-y-2 overflow-y-auto custom-scrollbar px-4 h-full max-h-[300px]">
+          <div class="bg-white text-black p-3 rounded-lg flex justify-between items-center">
+            <div>
+              <h3 class="font-bold">DOJ Certification | BSCS-1B</h3>
+              <p class="text-sm text-gray-600">M,W,F,Th | 1:15 PM - 2:15 PM</p>
+            </div>
+            <div class="flex items-center">
+              <span class="mr-1">34</span>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+          <div class="bg-white text-black p-3 rounded-lg flex justify-between items-center">
+            <div>
+              <h3 class="font-bold">DOJ Certification | BSCS-1A</h3>
+              <p class="text-sm text-gray-600">M,W,F,Th | 1:15 PM - 2:15 PM</p>
+            </div>
+            <div class="flex items-center">
+              <span class="mr-1">34</span>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+          <div class="bg-white text-black p-3 rounded-lg flex justify-between items-center">
+            <div>
+              <h3 class="font-bold">DOJ Certification | BSCS- 1C</h3>
+              <p class="text-sm text-gray-600">M,W,F,Th | 1:15 PM - 2:15 PM</p>
+            </div>
+            <div class="flex items-center">
+              <span class="mr-1">34</span>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+          <div class="bg-white text-black p-3 rounded-lg flex justify-between items-center">
+            <div>
+              <h3 class="font-bold">DOJ Certification | BSCS- 1C</h3>
+              <p class="text-sm text-gray-600">M,W,F,Th | 1:15 PM - 2:15 PM</p>
+            </div>
+            <div class="flex items-center">
+              <span class="mr-1">34</span>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+          <div class="bg-white text-black p-3 rounded-lg flex justify-between items-center">
+            <div>
+              <h3 class="font-bold">DOJ Certification | BSCS- 1C</h3>
+              <p class="text-sm text-gray-600">M,W,F,Th | 1:15 PM - 2:15 PM</p>
+            </div>
+            <div class="flex items-center">
+              <span class="mr-1">34</span>
+              <iconify-icon icon="mage:users-fill" width="20" height="20"></iconify-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Communication page -->
+  <div class="col-span-3 bg-navy-blue p-4 rounded-lg shadow-md bg-primary-tw">
+    <h2 class="text-lg font-bold text-white mb-2">Communication page</h2>
+    <div class="flex space-x-4">
+      <button (click)="openChatModal()" class="flex-1 bg-white text-black py-2 rounded-lg font-bold">CHAT</button>
+      <button (click)="openAlertModal()" class="flex-1 bg-white text-black py-2 rounded-lg font-bold">ALERT</button>
+      <button (click)="openBroadcastModal()"
+        class="flex-1 bg-white text-black py-2 rounded-lg font-bold">BROADCAST</button>
+    </div>
+  </div>
+</div>
+
+<!-- modals -->
+@if (showChatModal) {
+<div @fadeAnimation class="fixed top-0 left-0 z-[1000] w-full h-full background">
+  <div class="flex justify-center items-center h-fit w-fit ">
+    <app-modal-chat (close)="closeChatModal()"></app-modal-chat>
+  </div>
+</div>
+}
+
+
+@if (showAlertModal) {
+<div @fadeAnimation class="fixed top-0 left-0 z-[1000] w-full h-full background">
+  <div class="flex justify-center items-center z-[1000] h-full w-full">
+    <app-modal-alert (clickAlert)="closeAlertModal()"></app-modal-alert>
+  </div>
+</div>
+}
+
+
+@if (showBroadcastModal) {
+<div @fadeAnimation class="fixed top-0 left-0 z-[1000] w-full h-full background">
+  <div class="flex justify-center items-center z-[1000] h-full w-full">
+    <app-modal-broadcast (clickAlert)="closeBroadcastModal()"></app-modal-broadcast>
+  </div>
+</div>
+}

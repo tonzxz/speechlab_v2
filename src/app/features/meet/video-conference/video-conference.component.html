@@ -1,0 +1,103 @@
+<section class="mx-auto p-6 bg-white rounded-2xl border border-gray-200 shadow-lg">
+  <div class="flex flex-wrap gap-6 items-start w-full">
+    <!-- Join Meeting Section -->
+    <div class="flex-grow min-w-[300px] max-w-full">
+      <div class="bg-gradient-to-br from-slate-800 to-slate-700 rounded-2xl p-6 flex items-center justify-center h-[500px] shadow-inner">
+        <button *ngIf="!meetingJoined" (click)="joinMeeting()" class="px-8 py-4 bg-amber-500 hover:bg-amber-600 transition-colors rounded-xl text-white font-bold text-lg shadow-md">
+          Join Meeting
+        </button>
+        <div *ngIf="meetingJoined" class="text-white text-2xl font-semibold">
+          You've joined the meeting
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Chat Section -->
+    <aside class="w-[320px] bg-white rounded-xl border border-gray-200 shadow-md overflow-hidden">
+      <h2 class="text-2xl font-bold text-amber-500 p-4 border-b border-gray-200">Live Chat</h2>
+      <div class="h-[350px] overflow-y-auto p-4">
+        <ul class="space-y-4">
+          <li *ngFor="let message of chatMessages" class="animate-fade-in">
+            <div class="flex items-start gap-3">
+              <img [src]="message.avatar" [alt]="message.sender" class="w-8 h-8 rounded-full" />
+              <div>
+                <div class="flex items-center">
+                  <span class="font-semibold text-gray-800 mr-2">{{ message.sender }}</span>
+                  <time class="text-xs text-gray-500">{{ message.time }}</time>
+                </div>
+                <p class="mt-1 text-gray-700">{{ message.message }}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <form (ngSubmit)="sendMessage()" class="p-4 border-t border-gray-200">
+        <div class="flex items-center bg-gray-100 rounded-full overflow-hidden">
+          <input type="text" [(ngModel)]="newMessage" name="newMessage" placeholder="Type your message here..." class="flex-grow p-3 bg-transparent focus:outline-none" />
+          <button type="submit" class="p-3 bg-amber-500 hover:bg-amber-600 transition-colors">
+            <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/6a2a61404f4a4bd82bb739b45461b3854ac3d270c75eca2d37872f03c184fb25?placeholderIfAbsent=true&apiKey=f35c25b17acb406083beeda46a28c843" class="w-6 h-6" alt="Send" />
+          </button>
+        </div>
+      </form>
+    </aside>
+  </div>
+
+  <!-- Meeting Info -->
+  <div class="flex justify-between items-center mt-6 mb-4">
+    <h1 class="text-sm font-bold text-gray-800">Introduction to Programming</h1>
+    <div class="flex items-center text-sm font-semibold bg-gray-100 px-3 py-1 rounded-full">
+      <span class="mr-2">{{ participantCount }}</span>
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/8b00a3fc0ef442eb7682e0f9fed5f544dd2a72900d15e00488e13b393cfb26dd?placeholderIfAbsent=true&apiKey=f35c25b17acb406083beeda46a28c843" alt="Participants" class="w-5 h-5" />
+    </div>
+  </div>
+
+  <!-- Participants Video Feed -->
+  <div class="flex items-center justify-between mt-6 bg-gray-100 p-4 rounded-xl">
+    <div class="flex-shrink-0 bg-gray-300 w-[150px] h-[100px] rounded-lg flex items-center justify-center font-bold text-xl shadow-inner mr-4">YOU</div>
+
+    <button aria-label="Previous participant" class="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition-colors">
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/043033aacbbe0c083c37432b73e839996a2b1414de1fc5ee5b49cba591489e92?placeholderIfAbsent=true&apiKey=f35c25b17acb406083beeda46a28c843" class="w-6 h-6" alt="" />
+    </button>
+    <div class="flex gap-3 overflow-x-auto flex-grow mx-4 pb-2">
+      <div *ngFor="let i of [1,2,3,4,5,6]" class="flex-shrink-0 bg-gray-300 w-[150px] h-[100px] rounded-lg shadow"></div>
+    </div>
+    <button aria-label="Next participant" class="p-2 bg-white rounded-full shadow hover:bg-gray-50 transition-colors">
+      <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/f9eb512ad0c1bf541e2ad48da564e99e9ff04e09a55bdfa0458c5be4035946df?placeholderIfAbsent=true&apiKey=f35c25b17acb406083beeda46a28c843" class="w-6 h-6" alt="" />
+    </button>
+  </div>
+
+  <footer class="w-full mt-6 py-4 bg-gradient-to-r from-slate-800 to-slate-700 rounded-xl flex justify-center items-center shadow-md">
+    <div class="flex space-x-8">
+      <!-- Microphone -->
+      <button (click)="toggleMic()" [ngClass]="{'bg-red-600 hover:bg-red-700': !isMicOn, 'bg-gray-600 hover:bg-gray-500': isMicOn}" class="p-3 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path *ngIf="isMicOn" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          <path *ngIf="!isMicOn" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z M3 3l18 18" />
+        </svg>
+      </button>
+  
+      <!-- Video -->
+      <button (click)="toggleVideo()" [ngClass]="{'bg-red-600 hover:bg-red-700': !isVideoOn, 'bg-gray-600 hover:bg-gray-500': isVideoOn}" class="p-3 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path *ngIf="isVideoOn" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          <path *ngIf="!isVideoOn" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z M3 3l18 18" />
+        </svg>
+      </button>
+  
+      <!-- Share Screen -->
+      <button (click)="toggleScreenShare()" [ngClass]="{'bg-green-600 hover:bg-green-700': isScreenShared, 'bg-gray-600 hover:bg-gray-500': !isScreenShared}" class="p-3 rounded-full transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          <path *ngIf="isScreenShared" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 13v-1m4 1v-3m4 3V8" />
+        </svg>
+      </button>
+  
+      <!-- End Call -->
+      <button (click)="endCall()" class="p-3 bg-red-600 rounded-full hover:bg-red-700 transition-colors">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M5 3a2 2 0 00-2 2v1c0 8.284 6.716 15 15 15h1a2 2 0 002-2v-3.28a1 1 0 00-.684-.948l-4.493-1.498a1 1 0 00-1.21.502l-1.13 2.257a11.042 11.042 0 01-5.516-5.517l2.257-1.128a1 1 0 00.502-1.21L9.228 3.683A1 1 0 008.279 3H5z" />
+        </svg>
+      </button>
+    </div>
+  </footer>
+</section>

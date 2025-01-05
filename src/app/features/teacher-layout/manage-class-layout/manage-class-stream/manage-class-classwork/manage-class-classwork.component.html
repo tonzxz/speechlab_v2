@@ -1,0 +1,93 @@
+<div class="w-full h-fit relative pb-[20dvh]">
+  <div class="w-full h-full flex flex-col gap-4 justify-center items-start">
+    <!-- Dropdown for lessons -->
+    <select [(ngModel)]="selectedLessonId" (change)="onLessonChange()"
+      class="bg-white border border-gray-300 rounded-md px-4 py-2">
+      <option value="all">All Lessons</option>
+      <option *ngFor="let lesson of classWork" [value]="lesson.lesson_id">{{ lesson.lesson_title || 'Untitled Lesson' }}
+      </option>
+    </select>
+
+    <div class="relative">
+      <!-- Create Task button -->
+      <button (click)="showDropDown(1, $event)"
+        class="w-36 capitalize bg-primary-tw rounded-lg text-primary-text-tw py-1.5 hover:bg-secondary-tw flex flex-row justify-center items-center duration-300">
+        <iconify-icon icon="tdesign:plus" width="25" height="25"></iconify-icon> Create Task
+      </button>
+
+      <!-- Dropdown menu for creating tasks -->
+      <div *ngIf="dropDown !== null && dropDown === 1" @fadeAnimation
+        class="absolute top-12 left-10 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 border py-4 px-4 border-gray-300">
+        <button (clickOutside)="closeDropDown()" *ngFor="let item of dropDownList"
+          (click)="openCreateTaskModal(item.name)"
+          class="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-200 hover:text-secondary-tw">
+          {{ item.name }}
+        </button>
+      </div>
+    </div>
+
+    <!-- Task Items -->
+    <div *ngIf="!isViewingTask"
+      class="w-full h-fit custom-scrollbar flex flex-col gap-4 overflow-visible justify-center items-center">
+      <div class="w-full h-full flex flex-col gap-2">
+        <!-- Loop through filtered lessons -->
+        <div *ngFor="let lesson of filteredClassWork; let lessonIndex = index" class="w-full h-fit flex flex-col gap-4">
+          <div *ngIf="lesson.tasks.length !== 0 && selectedLessonId === 'all'" class="font-bold text-lg text-gray-900">
+            Lesson: {{ lesson.lesson_title || 'Untitled Lesson' }}</div>
+
+          <!-- Loop through tasks for each lesson -->
+          <div *ngFor="let task of lesson.tasks; let taskIndex = index"
+            class="w-full h-fit flex flex-row gap-4 justify-start items-center bg-white border border-gray-300 rounded-lg p-4 relative">
+            <img class="w-12" src="/assets/images/manage-class/group.png" alt="Task icon">
+
+            <div class="flex flex-col">
+              <h1 class="font-semibold">Task #{{ taskIndex + 1 }}: {{ task.description }}</h1>
+              <p class="text-sm text-gray-700">Due: {{ task.due_date_and_time | date: 'MMMM d, yyyy h:mm a' }}</p>
+            </div>
+
+            <!-- Action dropdown for task -->
+            <iconify-icon (click)="showDropDown(task.task_id, $event)"
+              class="absolute top-2 right-2 text-secondary-text-tw cursor-pointer" icon="tabler:dots-vertical"
+              width="25" height="25"></iconify-icon>
+
+            <!-- Task action dropdown (Edit, View, Delete) -->
+            <div *ngIf="dropDown !== null && dropDown === task.task_id" @fadeAnimation (clickOutside)="closeDropDown()"
+              class="absolute top-10 right-0 w-56 bg-white rounded-lg shadow-lg overflow-hidden z-50 border py-4 px-4 border-gray-200">
+              <button *ngFor="let action of actionList" (click)="openTaskModal(task, action.id, $event)"
+                class="block w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-200 hover:text-secondary-tw"
+                [ngClass]="{'text-red-500': action.name === 'Delete', 'hover:text-red-700': action.name === 'Delete'}">
+                {{ action.name }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Display message if no tasks available -->
+          <div *ngIf="lesson.tasks.length === 0 && selectedLessonId !== 'all'"
+            class="text-gray-500 text-center w-full py-2">
+            No tasks available for this lesson.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-classwork-view-task *ngIf="isViewingTask" [task]="viewedTask" [courseId]="courseId || ''"
+    (closeView)="closeTaskView()">
+  </app-classwork-view-task>
+
+  <!-- Modals (for other actions like create, edit, delete) -->
+  <div *ngIf="currentModal !== ModalState.None"
+    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
+    <div class="bg-white rounded-lg shadow-lg p-6 w-11/12 max-w-4xl max-h-[90vh] overflow-y-auto">
+      <app-class-work-assignment *ngIf="currentModal === ModalState.CreateTask && taskType !== 'Quiz'"
+        [taskId]="selectedTaskId" [lessonId]="currentLessonId" [courseId]="courseId" (closeModal)="closeTaskModal()">
+      </app-class-work-assignment>
+      <app-class-work-quiz
+        *ngIf="currentModal === ModalState.CreateQuiz || (currentModal === ModalState.CreateTask && taskType === 'Quiz')"
+        [taskId]="selectedTaskId" (closeModal)="closeTaskModal()">
+      </app-class-work-quiz>
+      <app-delete-class *ngIf="currentModal === ModalState.Delete" [itemToDelete]="'task'"
+        (closeModal)="closeTaskModal()">
+      </app-delete-class>
+    </div>
+  </div>

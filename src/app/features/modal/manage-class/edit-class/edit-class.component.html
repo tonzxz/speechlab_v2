@@ -1,0 +1,44 @@
+<div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); display: flex; justify-content: center; align-items: center; z-index: 1000;">
+    <div style="background-color: white; padding: 20px; border-radius: 8px; width: 100%; max-width: 500px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+      <h2 style="margin-bottom: 20px; font-size: 1.5rem; text-align: center;">Edit Class</h2>
+  
+      <form (ngSubmit)="onSubmit()">
+        <!-- Class Name -->
+        <label for="class_name" style="display: block; margin-bottom: 8px; font-weight: 600;">Class Name:</label>
+        <input id="class_name" [(ngModel)]="classData.class_name" name="class_name" required
+               style="width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 4px;">
+  
+        <!-- Class Code -->
+        <label for="class_code" style="display: block; margin-bottom: 8px; font-weight: 600;">Class Code:</label>
+        <input id="class_code" [(ngModel)]="classData.class_code" name="class_code"
+               style="width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 4px;">
+  
+        <!-- Day Schedule -->
+        <label style="display: block; margin-bottom: 8px; font-weight: 600;">Day Schedule:</label>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+          <label *ngFor="let day of days">
+            <input type="checkbox" [value]="day" [(ngModel)]="classData.day_schedule"
+                   (change)="onDayChange(day)" style="margin-right: 8px;">
+            {{ day }}
+          </label>
+        </div>
+  
+        <!-- Start Time -->
+        <label for="start_time" style="display: block; margin-bottom: 8px; font-weight: 600;">Start Time:</label>
+        <input id="start_time" type="time" [(ngModel)]="classData.class_start_time" name="class_start_time"
+               style="width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 4px;">
+  
+        <!-- End Time -->
+        <label for="end_time" style="display: block; margin-bottom: 8px; font-weight: 600;">End Time:</label>
+        <input id="end_time" type="time" [(ngModel)]="classData.class_end_time" name="class_end_time"
+               style="width: 100%; padding: 10px; margin-bottom: 16px; border: 1px solid #ccc; border-radius: 4px;">
+  
+        <!-- Submit and Cancel Buttons -->
+        <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+          <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer;">Save Changes</button>
+          <button type="button" style="padding: 10px 20px; background-color: #6c757d; color: white; border: none; border-radius: 4px; cursor: pointer;" (click)="onCancel()">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

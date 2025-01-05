@@ -1,0 +1,29 @@
+<div>
+  <h1>Profiles</h1>
+  <table class="min-w-full divide-y divide-gray-200 text-black">
+    <thead class="bg-gray-50 text-black">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-black">
+          ID
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-black">
+          first name
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-black">
+          last name
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider text-black">
+          Email
+        </th>
+      </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200 text-black">
+      <tr *ngFor="let profile of profiles">
+        <td class="px-6 py-4 whitespace-nowrap text-black">{{ profile.profile_id }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-black">{{ profile.first_name }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-black">{{ profile.last_name }}</td>
+        <td class="px-6 py-4 whitespace-nowrap text-black">{{ profile.email }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
